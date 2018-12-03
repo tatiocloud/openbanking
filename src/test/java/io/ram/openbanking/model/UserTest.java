@@ -56,7 +56,7 @@ public class UserTest {
                         LAST_LOGGED_IN);
         User savedUser = userRepository.save(user);
 
-        User queriedUser = userRepository.findByUsername(savedUser.getUsername()).get(0);
+        User queriedUser = userRepository.findByUsername(savedUser.getUsername());//.get(0);
         Assert.assertEquals(user,queriedUser);
 
     }

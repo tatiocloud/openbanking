@@ -18,8 +18,10 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -50,8 +52,9 @@ public class BalanceServiceImplTest {
 
     @Before
     public void setup(){
-        userRepository.deleteAll();
+        userBalanceRepository.deleteAll();
         cardRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     private User createUser() {
@@ -61,29 +64,35 @@ public class BalanceServiceImplTest {
                         LAST_LOGGED_IN);
     }
 
-    public Card createCard(){
+    public Card createNewUserCard(){
 
-        return new Card(CARD_NUMBER,CARD_CVV,user);
+        user = createUser();
+        User savedUser = userRepository.save(user);
+        return cardRepository.save(new Card(CARD_NUMBER,CARD_CVV,savedUser));
     }
 
     @Test
     public void test_create_new_user(){
 
-        user = createUser();
-        User savedUser = userRepository.save(user);
-        assertEquals(user,savedUser);
+        User byUsername = userRepository.findByUsername(USERNAME);
+        if(byUsername == null){
+            User savedUser = balanceService.addNewUser(USERNAME,PASSWORD);
+            assertEquals(savedUser.getUsername(), USERNAME);
+            assertEquals(savedUser.getPassword(), PASSWORD);
+        }
     }
 
     @Test
     public void test_create_new_card(){
-        card = createCard();
-        Card savedCard = balanceService.addNewCard(this.card);
+        userRepository.deleteAll();
+        card = createNewUserCard();
+        Card savedCard = balanceService.addNewCard(card);
         assertEquals(this.card,savedCard);
     }
 
     @Test
     public void test_create_check_usercard_details(){
-        card = createCard();
+        card = createNewUserCard();
         Card savedCard = cardRepository.save(card);
 
         assertEquals(card,savedCard);
@@ -92,12 +101,7 @@ public class BalanceServiceImplTest {
     @Test
     public void test_charge_card_with_1000(){
 
-        user = createUser();
-        User savedUser = userRepository.save(user);
-
-        card = createCard();
-        Card savedCard = cardRepository.save(card);
-
+        card = createNewUserCard();
         UserBalance userBalance = new UserBalance(user, card);
         UserBalance initialBalance = userBalanceRepository.save(userBalance);
 
@@ -107,4 +111,5 @@ public class BalanceServiceImplTest {
         assertEquals(updatedBalance.getBalance(),Double.valueOf(1000.00));
 
     }
+
 }

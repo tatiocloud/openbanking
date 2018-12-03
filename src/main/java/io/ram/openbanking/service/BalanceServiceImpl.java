@@ -22,10 +22,13 @@ public class BalanceServiceImpl implements BalanceService {
     @Autowired
     CardRepository cardRepository;
 
+    @Autowired
+    UserBalanceRepository userBalanceRepository;
+
     @Override
     public User addNewUser(String username, String password) {
         Date now = Date.from(Instant.now());
-        Timestamp timestamp = Timestamp.valueOf(now.toString());
+        Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(username, password, now, timestamp);
         return userRepository.save(user);
     }
@@ -38,7 +41,9 @@ public class BalanceServiceImpl implements BalanceService {
 
     @Override
     public UserBalance charge(User user, Card card, Double amountToBeAdded) {
-        return null;
+        UserBalance userBalance = userBalanceRepository.findByUserAndCard(user, card);
+        userBalance.transactCharge(amountToBeAdded);
+        return userBalanceRepository.save(userBalance);
     }
 
     @Override public UserBalance credit(User user, Card card, Double amountToBeCredited) {

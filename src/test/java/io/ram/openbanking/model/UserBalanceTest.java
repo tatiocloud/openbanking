@@ -85,7 +85,7 @@ public class UserBalanceTest {
         UserBalance userBalance = userBalanceRepository.save(balance);
         Assert.assertEquals(amount,userBalance.getBalance());
 
-        User byUsername = userRepository.findByUsername(user.getUsername()).get(0);
+        User byUsername = userRepository.findByUsername(user.getUsername());//.get(0);
         Card byNumberAndCvv = cardRepository.findByNumberAndCvv(card.getNumber(), card.getCvv()).get(0);
 
         UserBalance queriedUserBalanceWithUsernameAndCardNumber = userBalanceRepository.findByUserAndCard(byUsername, byNumberAndCvv);
