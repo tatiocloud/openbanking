@@ -3,6 +3,7 @@ package io.ram.openbanking.model;
 import io.ram.openbanking.repository.CardRepository;
 import io.ram.openbanking.repository.UserBalanceRepository;
 import io.ram.openbanking.repository.UserRepository;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,10 +49,6 @@ public class UserBalanceTest {
     @Before
     public void setup(){
 
-        userBalanceRepository.deleteAll();
-        cardRepository.deleteAll();
-        userRepository.deleteAll();
-
         user = new User(USERNAME,
                         PASSWORD,
                         CREATE_DT,
@@ -61,7 +58,14 @@ public class UserBalanceTest {
 
         card = new Card(CARD_NUMBER,CARD_CVV,user);
         cardRepository.save(card);
+    }
 
+    @After
+    public void teardown(){
+
+        userBalanceRepository.deleteAll();
+        cardRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test

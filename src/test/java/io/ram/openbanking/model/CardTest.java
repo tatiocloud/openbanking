@@ -2,6 +2,7 @@ package io.ram.openbanking.model;
 
 import io.ram.openbanking.repository.CardRepository;
 import io.ram.openbanking.repository.UserRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,10 +41,13 @@ public class CardTest {
 
     @Before
     public void setup(){
-
         user = userRepository.save(createUser());
+    }
 
-
+    @After
+    public void teardown(){
+        cardRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     private User createUser() {
