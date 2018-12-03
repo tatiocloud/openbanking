@@ -10,19 +10,29 @@ public class Card implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "card_number")
     private Long number;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "card_cvv")
     private Integer cvv;
 
-    public Card(Long number, Integer cvv) {
+    public Card(){
+        //hibernate
+    }
+    public Card(Long number, Integer cvv,User user) {
         this.number = number;
         this.cvv = cvv;
+        this.user = user;
     }
+
+
 
     public Long getId() {
         return id;
@@ -48,6 +58,15 @@ public class Card implements Serializable {
         this.cvv = cvv;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     @Override public boolean equals(Object o) {
         if (this == o)
             return true;
@@ -67,6 +86,7 @@ public class Card implements Serializable {
         return "Card{" +
                "id=" + id +
                ", number=" + number +
+               ", user=" + user +
                ", cvv=" + cvv +
                '}';
     }

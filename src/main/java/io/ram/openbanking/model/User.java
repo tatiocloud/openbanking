@@ -7,12 +7,13 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -20,13 +21,13 @@ public class User implements Serializable {
     private String password;
 
     @Temporal(TemporalType.DATE)
-    //@Column(name = "creation_dt", nullable = false)
     private Date creationDt;
 
-
-    //@Column(name = "last_logged_in", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLoggedIn;
+
+    @Column(name = "is_currently_logged_in")
+    private boolean status;
 
     public User(){
         //hibernate
@@ -71,6 +72,14 @@ public class User implements Serializable {
         this.lastLoggedIn = lastLoggedIn;
     }
 
+    public void loggin(){
+        this.status = true;
+    }
+
+    public boolean getStatus(){
+        return this.status;
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o)
             return true;
@@ -91,6 +100,7 @@ public class User implements Serializable {
                ", username='" + username + '\'' +
                ", password='" + password + '\'' +
                ", lastLoggedIn=" + lastLoggedIn +
+               ", currentlyLoggedIn=" + status +
                '}';
     }
 }

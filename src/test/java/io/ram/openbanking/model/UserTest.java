@@ -1,4 +1,4 @@
-package io.ram.openbanking.repository;
+package io.ram.openbanking.model;
 
 import io.ram.openbanking.model.User;
 import io.ram.openbanking.repository.UserRepository;
