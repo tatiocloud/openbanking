@@ -112,4 +112,24 @@ public class BalanceServiceImplTest {
 
     }
 
+    @Test
+    public void test_deduct_card_balance(){
+        card = createNewUserCard();
+        UserBalance userBalance = new UserBalance(user, card);
+        UserBalance initialBalance = userBalanceRepository.save(userBalance);
+
+        assertEquals(Double.valueOf(0.0),initialBalance.getBalance());
+
+        UserBalance updatedBalanceWithAdd = balanceService.charge(user, card, 1000.00);
+        assertEquals(updatedBalanceWithAdd.getBalance(),Double.valueOf(1000.00));
+
+        Double deductAmt = 100.00;
+
+        updatedBalanceWithAdd.transactCredit(deductAmt);
+
+        UserBalance credit = balanceService.credit(user, card, deductAmt);
+        assertEquals(credit.getBalance(),Double.valueOf(900.00));
+
+    }
+
 }

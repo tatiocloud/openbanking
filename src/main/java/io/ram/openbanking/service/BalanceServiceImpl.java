@@ -47,6 +47,8 @@ public class BalanceServiceImpl implements BalanceService {
     }
 
     @Override public UserBalance credit(User user, Card card, Double amountToBeCredited) {
-        return null;
+        UserBalance balanceForUserAndCard = userBalanceRepository.findByUserAndCard(user, card);
+        balanceForUserAndCard.transactCredit(amountToBeCredited);
+        return userBalanceRepository.save(balanceForUserAndCard);
     }
 }
