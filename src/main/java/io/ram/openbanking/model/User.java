@@ -1,5 +1,9 @@
 package io.ram.openbanking.model;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -15,18 +19,23 @@ public class User implements Serializable {
     private Long id;
 
     @Column(name = "username", nullable = false)
+    @SerializedName( "username" )
     private String username;
 
     @Column(name = "password", nullable = false)
+    @SerializedName("password")
     private String password;
 
     @Temporal(TemporalType.DATE)
+    @SerializedName("created_dt")
     private Date creationDt;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @SerializedName("last_logged_in_timestamp")
     private Date lastLoggedIn;
 
     @Column(name = "is_currently_logged_in")
+    @SerializedName("status")
     private boolean status;
 
     public User(){
@@ -98,7 +107,6 @@ public class User implements Serializable {
         return "User{" +
                "id=" + id +
                ", username='" + username + '\'' +
-               ", password='" + password + '\'' +
                ", lastLoggedIn=" + lastLoggedIn +
                ", currentlyLoggedIn=" + status +
                '}';
