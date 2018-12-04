@@ -1,5 +1,6 @@
 package io.ram.openbanking.controller;
 
+import io.ram.openbanking.json.AbstractJsonBuilder;
 import io.ram.openbanking.model.*;
 import io.ram.openbanking.service.BalanceService;
 import io.ram.openbanking.service.CardService;
@@ -11,7 +12,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/payment")
-public class PaymentController extends AbstractController{
+public class PaymentController extends AbstractJsonBuilder {
 
     @Autowired
     BalanceService balanceService;

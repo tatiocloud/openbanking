@@ -51,7 +51,7 @@ public class PaymentControllerTest extends AbstractTest{
     Card card;
 
     @Test
-    public void create_new_card() throws Exception {
+    public void test_add1000_to_balance() throws Exception {
         Long CARD_NUMBER = 12345678990L;
         Integer CARD_CVV = 123;
 
@@ -72,19 +72,59 @@ public class PaymentControllerTest extends AbstractTest{
 
         when(balanceService.charge(any(User.class),any(Card.class),any(Double.class))).thenReturn(userBalance);
 
-        PaymentRequest paymentRequest = new PaymentRequest(USERNAME,CARD_NUMBER,CARD_CVV,amountToBeAdded,0.0);
+        PaymentRequest paymentRequest = new PaymentRequest(USERNAME,CARD_NUMBER,CARD_CVV,amountToBeAdded);
+        String payReqJson = paymentRequest.mapToJson();
 
         PaymentResponse response = new PaymentResponse(amountToBeAdded);
 
-        String userBalToJson = super.mapToJson(userBalance);
         String responseJson = super.mapToJson(response);
 
         this.mockMvc
-                .perform(post("/api/payment/charge").contentType(MediaType.APPLICATION_JSON).content(userBalToJson))
+                .perform(post("/api/payment/charge").contentType(MediaType.APPLICATION_JSON).content(payReqJson))
                 .andExpect(status().isOk())
                 .andExpect(content().json(responseJson))
                 .andExpect(jsonPath("$.balance",amountToBeAdded).hasJsonPath())
                 .andReturn();
+    }
+
+    @Test
+    public void test_deduct100_from_balance() throws Exception {
+        Long CARD_NUMBER = 12345678990L;
+        Integer CARD_CVV = 123;
+
+        String USERNAME = "testuser";
+        String PASSWORD = "password";
+        Date CREATE_DT = Date.valueOf(LocalDate.now());
+        Timestamp LAST_LOGGED_IN = Timestamp.from(Instant.now());
+        Double amountToBeAdded = 1000.00;
+
+        User user = new User(USERNAME,PASSWORD,CREATE_DT,LAST_LOGGED_IN);
+        card = new Card(CARD_NUMBER,CARD_CVV,user);
+        long number = 1234567890L;
+
+        when(userService.findByUserName(any(String.class))).thenReturn(user);
+        when(cardService.findCardByNumberAndCvv(CARD_NUMBER,CARD_CVV)).thenReturn(card);
+        UserBalance userBalance = new UserBalance(user,card);
+        userBalance.transactCharge(amountToBeAdded);
+        Double amount_to_deduct = 100.00;
+        when(balanceService.charge(any(User.class),any(Card.class),any(Double.class))).thenReturn(userBalance);
+
+        userBalance.transactCredit(amount_to_deduct);
+        when(balanceService.credit(any(User.class),any(Card.class),any(Double.class))).thenReturn(userBalance);
+
+        PaymentRequest paymentRequest = new PaymentRequest(USERNAME,CARD_NUMBER,CARD_CVV,amount_to_deduct);
+        String payReqJson = paymentRequest.mapToJson();
+
+        PaymentResponse response = new PaymentResponse(userBalance.getBalance());
+
+        String responseJson = super.mapToJson(response);
+
+        this.mockMvc
+                        .perform(post("/api/payment/charge").contentType(MediaType.APPLICATION_JSON).content(payReqJson))
+                        .andExpect(status().isOk())
+                        .andExpect(content().json(responseJson))
+                        .andExpect(jsonPath("$.balance",(amountToBeAdded - amount_to_deduct)).hasJsonPath())
+                        .andReturn();
     }
 
 }

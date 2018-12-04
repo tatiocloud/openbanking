@@ -1,4 +1,4 @@
-package io.ram.openbanking.controller;
+package io.ram.openbanking.json;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,13 +7,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public abstract class AbstractController {
+public abstract class AbstractJsonBuilder {
 
-    protected String mapToJson(Object obj) throws JsonProcessingException {
+    public String mapToJson(Object obj) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);
     }
-    protected <T> T mapFromJson(String json, Class<T> clazz)
+
+    public String mapToJson() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(this);
+    }
+
+    public  <T> T mapFromJson(String json, Class<T> clazz)
             throws JsonParseException, JsonMappingException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();

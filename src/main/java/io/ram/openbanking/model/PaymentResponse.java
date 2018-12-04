@@ -3,10 +3,11 @@ package io.ram.openbanking.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.ram.openbanking.json.AbstractJsonBuilder;
 
 import java.io.Serializable;
 
-public class PaymentResponse implements Serializable {
+public class PaymentResponse extends AbstractJsonBuilder{
 
     @JsonProperty("balance")
     private Double balance;

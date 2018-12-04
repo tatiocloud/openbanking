@@ -1,12 +1,14 @@
 package io.ram.openbanking.model;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.ram.openbanking.json.AbstractJsonBuilder;
 
 import java.io.Serializable;
 
-//@JsonIgnoreProperties({"cvv"})
-public class PaymentRequest implements Serializable {
+public class PaymentRequest extends AbstractJsonBuilder{
 
     @JsonProperty("username")
     private String username;
@@ -20,21 +22,16 @@ public class PaymentRequest implements Serializable {
     @JsonProperty("amount")
     private Double amount;
 
-    @JsonProperty("balance")
-    private Double balance;
-
-
     public PaymentRequest(){
         //default for Json constructor
 
     }
 
-    public PaymentRequest(String username, Long number, Integer cvv, Double amount, Double balance) {
+    public PaymentRequest(String username, Long number, Integer cvv, Double amount) {
         this.username = username;
         this.number = number;
         this.cvv = cvv;
         this.amount = amount;
-        this.balance = balance;
     }
 
     public String getUsername() {
@@ -49,13 +46,16 @@ public class PaymentRequest implements Serializable {
         return number;
     }
 
+
     public void setNumber(Long number) {
         this.number = number;
     }
 
+    @JsonIgnore
     public Integer getCvv() {
         return cvv;
     }
+
 
     public void setCvv(Integer cvv) {
         this.cvv = cvv;
@@ -69,11 +69,12 @@ public class PaymentRequest implements Serializable {
         this.amount = amount;
     }
 
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    @Override public String toString() {
+        return "PaymentRequest{" +
+               "username='" + username + '\'' +
+               ", number=" + number +
+               ", cvv=" + cvv +
+               ", amount=" + amount +
+               '}';
     }
 }

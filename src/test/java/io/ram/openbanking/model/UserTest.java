@@ -19,10 +19,10 @@ import java.time.LocalDate;
 @SpringBootTest
 public class UserTest {
 
-    public static final String USERNAME = "testuser";
-    public static final String PASSWORD = "password";
-    public static final Date CREATE_DT = Date.valueOf(LocalDate.now());
-    public static final Timestamp LAST_LOGGED_IN = Timestamp.from(Instant.now());
+    private static final String USERNAME = "testuser";
+    private static final String PASSWORD = "password";
+    private static final Date CREATE_DT = Date.valueOf(LocalDate.now());
+    private static final Timestamp LAST_LOGGED_IN = Timestamp.from(Instant.now());
 
     private User user;
 

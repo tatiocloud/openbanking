@@ -1,19 +1,16 @@
 package io.ram.openbanking.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import io.ram.openbanking.json.AbstractJsonBuilder;
 import io.ram.openbanking.model.User;
-import io.ram.openbanking.service.BalanceService;
 import io.ram.openbanking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController extends AbstractController{
+public class UserController extends AbstractJsonBuilder {
 
     @Autowired
     private UserService userService;
