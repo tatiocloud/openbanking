@@ -1,5 +1,8 @@
 package io.ram.openbanking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,17 +11,21 @@ public class UserBalance {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column(name = "balance")
+    @JsonProperty("balance")
     private Double balance = 0.0;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    //@JsonIgnore
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id", nullable = false)
+    //@JsonIgnore
     private Card card;
 
     public UserBalance(){

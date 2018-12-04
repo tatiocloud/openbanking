@@ -1,5 +1,7 @@
 package io.ram.openbanking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +21,24 @@ public class User implements Serializable {
     private Long id;
 
     @Column(name = "username", nullable = false)
-    @SerializedName( "username" )
+    @JsonProperty("username")
     private String username;
 
     @Column(name = "password", nullable = false)
-    @SerializedName("password")
+    @JsonProperty("password")
+    //@JsonIgnore
     private String password;
 
     @Temporal(TemporalType.DATE)
-    @SerializedName("created_dt")
+    @JsonProperty("created_dt")
     private Date creationDt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @SerializedName("last_logged_in_timestamp")
+    @JsonProperty("last_logged_in_timestamp")
     private Date lastLoggedIn;
 
     @Column(name = "is_currently_logged_in")
-    @SerializedName("status")
+    @JsonProperty("status")
     private boolean status;
 
     public User(){

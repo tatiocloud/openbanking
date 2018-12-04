@@ -1,5 +1,7 @@
 package io.ram.openbanking.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,12 +10,12 @@ import java.util.Objects;
 @Table(name = "card")
 public class Card implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "card_number")
+    @JsonProperty("number")
     private Long number;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -21,6 +23,7 @@ public class Card implements Serializable {
     private User user;
 
     @Column(name = "card_cvv")
+    @JsonProperty("cvv")
     private Integer cvv;
 
     public Card(){

@@ -18,7 +18,7 @@ public class CardController extends AbstractController{
     private CardService cardService;
 
     @PostMapping("/create")
-    public @ResponseBody String addNewUser(@RequestBody String cardReq) throws IOException {
+    public @ResponseBody String addNewCard(@RequestBody String cardReq) throws IOException {
 
         Card card = super.mapFromJson(cardReq, Card.class);
         Card savedCard = cardService.addNewCard(card);

@@ -8,4 +8,6 @@ public interface CardService {
 
     Card addNewCard(Card card);
 
+    Card findCardByNumberAndCvv(Long number, Integer cvv);
+
 }

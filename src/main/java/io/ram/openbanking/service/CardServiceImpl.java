@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -26,6 +27,15 @@ public class CardServiceImpl implements CardService {
     @Override
     public Card addNewCard(Card card) {
         return cardRepository.save(card);
+    }
+
+    @Override
+    public Card findCardByNumberAndCvv(Long number, Integer cvv) {
+        List<Card> cards = cardRepository.findByNumberAndCvv(number, cvv);
+        if(!cards.isEmpty()){
+            return cards.get(0);
+        }
+        return null;
     }
 
 }
